@@ -1,0 +1,12 @@
+Package: repDiagnosis
+Title: Diagnostics for replication studies
+Version: 0.0.0.9000
+Authors@R: 
+    person("Jin", "Ying", , "ying531@stanford.edu", role = c("aut", "cre"),
+           comment = c(ORCID = "YOUR-ORCID-ID"))
+Description: This package provides analysis tools for estimating the effect of observed heterogeneity in replication studies.
+License: `use_mit_license()` 
+Encoding: UTF-8
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.2.0
+Imports: tidyverse, ggplot2, ebal, lmtest, sandwich, multiwayvcov, progress

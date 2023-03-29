@@ -1,3 +1,9 @@
+#' @import ggplot2
+#' @import ebal
+#' @import tidyverse
+#' @import progress
+#' @import sandwich
+#' @import lmtest
 #' @title Run diagnosis function
 #' @description This function runs the diagnosis analysis for replication studies. It returns a decomposition of the discrepancy between a pair of original and replication studies into pieces attributable to covariate shift, mediation shift, and residual factors. It also provides post-selective confidence intervals for these pieces that adjust for potential publication bias.
 #' @param org_df The data frame for the original study
@@ -17,7 +23,6 @@
 
 #' @return A list containing the summary table, decomposition plot, summary table for selective inference, decomposition plot for selective inference, and error message for selective inference in the case of infinite confidence intervals
 #' @export
-
 
 run_diagnosis <- function(
     org_df,
@@ -74,6 +79,9 @@ run_diagnosis <- function(
       stop("Covariate input does not work! \n")
     }else{# extract covariate names into a vector
       covariates = colnames(X1)[2:ncol(X1)]
+      if (is.null(dim(X1[,2:ncol(X1)]))){
+        if (sd(X1[,2:ncol(X1)])==0){stop("Constant covariate error! \n")}
+      }
     }
   }
 
@@ -98,6 +106,12 @@ run_diagnosis <- function(
       for (i.par in 1:length(mediators)){
         if (!is.na(suppressWarnings(as.integer(mediators[i.par])))){
           mediators[i.par] = colnames(org_df)[as.integer(mediators[i.par])]
+        }
+      }
+      # check whether the mediator is constant
+      if (length(mediators)==1){
+        if (sd(org_df[mediators[1]])==0 || sd(rep_df[mediators[1]])==0){
+          stop("Constant mediator error! \n")
         }
       }
       # generate mediation formula
@@ -416,7 +430,7 @@ run_diagnosis <- function(
         selective.plt = bounds.sel.tp %>%
           mutate(component = factor(components, levels = c("Original", "Observed", "Covariates", "Mediators", "Residual"))) %>%
           ggplot(aes(x = component, fill = component, y = estimate, ymin = low, ymax = high)) +
-          geom_crossbar(aes(col = component), alpha = 0.5, width=0.6) +
+          geom_crossbar(aes(col = component), alpha = 0.8, width=0.5) +
           theme_bw() + xlab("") + ylab("") +
           theme(legend.position = "None") +
           geom_hline(yintercept = 0, lty=2) +

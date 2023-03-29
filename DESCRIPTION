@@ -1,9 +1,11 @@
 Package: repDiagnosis
-Title: Diagnostics for replication studies
-Version: 0.0.0.9000
-Authors@R: 
-    person("Jin", "Ying", , "ying531@stanford.edu", role = c("aut", "cre"),
-           comment = c(ORCID = "YOUR-ORCID-ID"))
+Title: Diagnostics for Replication Studies
+Version: 0.0.1
+Authors@R: c(
+    person("Ying", "Jin", , "ying531@stanford.edu", role = c("aut", "cre"),
+           comment = c(ORCID = "0000-0002-5211-5083")),
+    person("Kevin", "Guo", role = c("aut")),
+    person("Dominik", "Rothenhäusler", role=c("aut")))
 Description: This package provides analysis tools for estimating the effect of observed heterogeneity in replication studies.
 License: `use_mit_license()` 
 Encoding: UTF-8

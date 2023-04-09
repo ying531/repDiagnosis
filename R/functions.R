@@ -110,7 +110,7 @@ run_diagnosis <- function(
       }
       # check whether the mediator is constant
       if (length(mediators)==1){
-        if (sd(org_df[mediators[1]])==0 || sd(rep_df[mediators[1]])==0){
+        if (sd(as.numeric(unlist(org_df[mediators[1]])))==0 || sd(as.numeric(unlist(rep_df[mediators[1]])))==0){
           stop("Constant mediator error! \n")
         }
       }

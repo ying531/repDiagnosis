@@ -1,0 +1,26 @@
+---
+title: "Cite repDiagnosis"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Cite repDiagnosis}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+ 
+To cite `repDiagnosis` in publications, please use the following references:
+
+```bibtex
+@Manual{your-package,
+  title = {repDiagnosis: Diagnostics for Replication Studies},
+  author = {Ying Jin and Kevin Guo and Dominik Rothenhäusler},
+  year = {2023},
+  note = {R package version 0.0.1},
+  url = {https://github.com/yourusername/repDiagnosis},
+}
+
+@Article{your-paper,
+  title = {Title of Your Related Paper},
+  author = {Ying Jin and Kevin Guo and Dominik Rothenhäusler},
+  journal = {Journal Name},
+  year = {2023},
+```

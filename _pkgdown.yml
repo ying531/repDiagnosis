@@ -1,0 +1,11 @@
+url: "https://ying531.github.io/repDiagnosis"  # Replace with your package's website URL
+
+navbar:
+  structure:
+    - text: "Cite repDiagnosis"
+      href: articles/citation.html
+
+authors:
+  yourusername:  # Replace with your GitHub username
+    href: https://github.com/ying531
+  

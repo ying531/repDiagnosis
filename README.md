@@ -1,16 +1,18 @@
 # repDiagnosis
-Repository for R package `repDiagnosis` and R shiny website of live replication diagnosis tools.
+Repository for R package `repDiagnosis` and R shiny app for live replication diagnosis tools.
  
 
-**Reference.** Please use the following citation if you use our softwares for analyzing replication studies.
+**Reference.** Please use the following citation if you use our methods, datasets, or softwares for analyzing replication studies.
 
 ```
 
 ```
 
-**Rshiny app.** If you would like to quickly get started with our method, we recommend you visit our Rshiny app and play with our preloaded  clean datasets. Our Rshiny app is also convenient to use if you want to diagnose your replication study pairs with features that display and visualize data, lively specify your study, etc., or if you want to probe the generalizability of your single study (this function is not in our package and paper).
+**Rshiny app.** To quickly get started with our method, we recommend you visit our Rshiny app and play with our preloaded  clean datasets. Our Rshiny app is also helpful if you want to quickly diagnose your replication study pairs with easy-to-use features, such as live displaying and visualizing data, specifying your study, automatically checking regression in two studies, etc., or if you want to probe the generalizability of your single study (this function is not in our package and paper).
 
-**Dataset collection.** We collect individual-level data for 11 original-replication study pairs from publicly available sources, and 5 one-sided replication studies. Visit our data collection to explore these datasets and our pre-processed clean versions: 
+**Dataset collection.** In a sibling Github repository [awesome-replicability-data](https://github.com/ying531/awesome-replicability-data), we collect individual-level data for 11 original-replication study pairs from publicly available sources, and 5 one-sided replication studies. Visit our data collection to explore these datasets and our pre-processed clean versions.
+
+**Documentation website.** For more on the package and the Rshiny app, see the associated [documentation]() website.
 
 ## Install R Package `repDiagnosis`
   
@@ -20,7 +22,7 @@ Repository for R package `repDiagnosis` and R shiny website of live replication 
 
 ## Example 
 
-We show how to conduct the diagnosis for the replication study on EMDR and misinformation (for details and cleaned datasets, see Data pair 3 in our dataset collection). 
+We show how to conduct the diagnosis for the replication study on EMDR and misinformation, which decomposes the discrepancy between original and replication study estimates into several interpretable pieces (for details and cleaned datasets, see Data pair 3 in our dataset collection). 
 
 **Load datasets.** First, the paired datasets can be directly loaded from the package. Use `data()` to load them as `org.dat` for original study and `rep.dat` for replication study. You can also use your own datasets, but make sure their column names are consistent. 
 
@@ -49,14 +51,14 @@ mediators = c("postvividness", "postemotionality")
 
 ```R
 results = run_diagnosis(
-  org_df = org.dat,
-  rep_df = rep.dat,
-  analysis_formula = analysis_formula,
-  treatment_name = treatment_name,
-  id_name_1 = "X",
-  id_name_2 = "X",
-  covariates = covariates,
-  mediators = mediators,
+  org_df = org.dat, # data frame for original study
+  rep_df = rep.dat, # data frame for replication study 
+  analysis_formula = analysis_formula, # regression formula 
+  treatment_name = treatment_name, # column name of treatment indicator
+  id_name_1 = "X", # cluster ID for original study
+  id_name_2 = "X", # cluster ID for replication study 
+  covariates = covariates, # covariates to balance
+  mediators = mediators, # mediators to balance
   alpha = 0.1, # confidence level for all CIs
   verbose = TRUE, # printing the tables and plots
   if_selective = TRUE, # conduct the selective inference CIs

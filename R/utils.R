@@ -121,19 +121,3 @@
   ))
 }
 
-org.dat = read.csv("/Users/ying/Desktop/Stanford/Research/Dominik/decomposition/replication_data/host_data/covid_study/original_clean.csv")
-rep.dat = read.csv("/Users/ying/Desktop/Stanford/Research/Dominik/decomposition/replication_data/host_data/covid_study/replication_clean.csv")
-save(org.dat, rep.dat, file = "data/covid_info.rda")
-
-
-org.dat = read.csv("/Users/ying/Desktop/Stanford/Research/Dominik/decomposition/replication_data/host_data/emdr_misinfo/original_clean.csv")
-rep.dat = read.csv("/Users/ying/Desktop/Stanford/Research/Dominik/decomposition/replication_data/host_data/emdr_misinfo/replication_clean.csv")
-save(org.dat, rep.dat, file = "data/emdr_misinfo.rda")
-
-org.dat = read.csv("/Users/ying/Desktop/Stanford/Research/Dominik/decomposition/replication_data/host_data/cleaniness_moral/original_exp1_clean.csv")
-rep.dat = read.csv("/Users/ying/Desktop/Stanford/Research/Dominik/decomposition/replication_data/host_data/cleaniness_moral/replication_exp1_clean.csv")
-save(org.dat, rep.dat, file = "data/clean_moral_1.rda")
-
-org.dat = read.csv("/Users/ying/Desktop/Stanford/Research/Dominik/decomposition/replication_data/host_data/cleaniness_moral/original_exp2_clean.csv")
-rep.dat = read.csv("/Users/ying/Desktop/Stanford/Research/Dominik/decomposition/replication_data/host_data/cleaniness_moral/replication_exp2_clean.csv")
-save(org.dat, rep.dat, file = "data/clean_moral_2.rda")

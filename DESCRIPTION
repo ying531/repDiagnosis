@@ -7,7 +7,7 @@ Authors@R: c(
     person("Kevin", "Guo", role = c("aut")),
     person("Dominik", "Rothenhäusler", role=c("aut")))
 Description: This package provides analysis tools for estimating the effect of observed heterogeneity in replication studies.
-License: `use_mit_license()` 
+License: MIT + file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.2.0

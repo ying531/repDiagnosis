@@ -33,7 +33,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">repDiagnosis</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.1.0</span>
       </span>
     </div>
 
@@ -50,7 +50,7 @@
   </a>
   <ul class="dropdown-menu" role="menu">
 <li>
-      <a href="articles/citation.html">Cite repDiagnosis</a>
+      <a href="articles/citation.html">Citation</a>
     </li>
   </ul>
 </li>
@@ -88,14 +88,14 @@
 <div class="section level2">
 <h2 id="example">Example<a class="anchor" aria-label="anchor" href="#example"></a>
 </h2>
-<p>We show how to conduct the diagnosis for the replication study on EMDR and misinformation, which decomposes the discrepancy between original and replication study estimates into several interpretable pieces (for details and cleaned datasets, see Data pair 3 in our dataset collection).</p>
+<p>We walk through the replication study on EMDR and misinformation to show the use of our method, which decomposes the discrepancy between original and replication study estimates into several interpretable pieces (for details and cleaned datasets, see Data pair 3 in our dataset collection).</p>
 <p><strong>Load datasets.</strong> First, the paired datasets can be directly loaded from the package. Use <code><a href="https://rdrr.io/r/utils/data.html" class="external-link">data()</a></code> to load them as <code>org.dat</code> for original study and <code>rep.dat</code> for replication study. You can also use your own datasets, but make sure their column names are consistent.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"emdr_misinfo"</span><span class="op">)</span></span></code></pre></div>
 <p><strong>Specify regression.</strong> In this study, the regression of interest is <code>totalcorrect</code> on the treatment indicator named <code>condition</code>. Specify the regression formula as you do for linear models, and specify the treatment variable name.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">analysis_formula</span> <span class="op">=</span> <span class="st">"totalcorrect ~ condition"</span></span>
-<span><span class="va">treatment_name</span> <span class="op">=</span> <span class="st">"condition"</span></span></code></pre></div>
+<span><span class="va">treatment_variable</span> <span class="op">=</span> <span class="st">"condition"</span></span></code></pre></div>
 <p><strong>Specify covariates and mediators.</strong> Suppose you are interested in the heterogeneity between two studies captured by covariates <code>age</code> and <code>gender</code>. Also, you wonder whether the mediators <code>postvividness</code> and <code>postemotionality</code> capture any more heterogeneity. Specify these quantities as vectors.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">covariates</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"age"</span>, <span class="st">"gender"</span><span class="op">)</span></span>
@@ -103,42 +103,174 @@
 <p><strong>Specify group IDs for clustered experiments.</strong> This is not needed for this dataset. If you like, you can also specify group IDs as <code>X</code>, which is a redundant variable that indicates the participant ID.</p>
 <p><strong>Run the decomposition.</strong> Finally, call our analysis function to run the diagnosis. It returns a summary table and a decomposition plot similar to our paper. By default, it also computes post-selective CIs that are valid at 1-<code>alpha</code> level after adjusting for the publication bias (i.e., only publishing p-values smaller than <code>pub_pvalue_threshold</code> whose default value is <code>0.05</code>).</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">results</span> <span class="op">=</span> <span class="fu"><a href="reference/run_diagnosis.html">run_diagnosis</a></span><span class="op">(</span></span>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span></span>
+<span><span class="va">results</span> <span class="op">=</span> <span class="fu"><a href="reference/run_diagnosis.html">run_diagnosis</a></span><span class="op">(</span></span>
 <span>  org_df <span class="op">=</span> <span class="va">org.dat</span>, <span class="co"># data frame for original study</span></span>
 <span>  rep_df <span class="op">=</span> <span class="va">rep.dat</span>, <span class="co"># data frame for replication study </span></span>
 <span>  analysis_formula <span class="op">=</span> <span class="va">analysis_formula</span>, <span class="co"># regression formula </span></span>
 <span>  treatment_name <span class="op">=</span> <span class="va">treatment_name</span>, <span class="co"># column name of treatment indicator</span></span>
-<span>  id_name_1 <span class="op">=</span> <span class="st">"X"</span>, <span class="co"># cluster ID for original study</span></span>
-<span>  id_name_2 <span class="op">=</span> <span class="st">"X"</span>, <span class="co"># cluster ID for replication study </span></span>
+<span>  focal_variable <span class="op">=</span> <span class="cn">NULL</span>, <span class="co"># focal variable, set as treatment_name if NULL</span></span>
 <span>  covariates <span class="op">=</span> <span class="va">covariates</span>, <span class="co"># covariates to balance</span></span>
-<span>  mediators <span class="op">=</span> <span class="va">mediators</span>, <span class="co"># mediators to balance</span></span>
+<span>  mediators <span class="op">=</span> <span class="va">mediators</span>, <span class="co"># mediators to balance </span></span>
+<span>  cluster_id <span class="op">=</span> <span class="st">"X"</span>, <span class="co"># can also be set to NULL in this case</span></span>
+<span>  selection_variable <span class="op">=</span> <span class="cn">NULL</span>, <span class="co"># variable on which the selection happens, set  treatment_name if NULL</span></span>
 <span>  alpha <span class="op">=</span> <span class="fl">0.1</span>, <span class="co"># confidence level for all CIs</span></span>
 <span>  verbose <span class="op">=</span> <span class="cn">TRUE</span>, <span class="co"># printing the tables and plots</span></span>
 <span>  if_selective <span class="op">=</span> <span class="cn">TRUE</span>, <span class="co"># conduct the selective inference CIs</span></span>
 <span>  pub_pvalue_threshold <span class="op">=</span> <span class="fl">0.05</span> <span class="co"># p-value threshold for publication bias</span></span>
-<span>  <span class="op">)</span></span></code></pre></div>
-<p>If <code>verbose=TRUE</code>, it displays the following summary table:</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>Summary of decomposition <span class="cf">for</span> replication diagnosis<span class="sc">:</span></span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>              Estimate Std. Error     t<span class="sc">-</span>stat     <span class="fu">Pr</span>(<span class="sc">&gt;</span><span class="er">|</span>z<span class="sc">|</span>)</span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>Original   <span class="sc">-</span><span class="fl">1.04878049</span>  <span class="fl">0.2634718</span> <span class="sc">-</span><span class="fl">3.9806177</span> <span class="fl">6.873641e-05</span></span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>Observed   <span class="sc">-</span><span class="fl">1.13211382</span>  <span class="fl">0.3361254</span> <span class="sc">-</span><span class="fl">3.3681297</span> <span class="fl">7.567998e-04</span></span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>Covariates  <span class="fl">0.08133811</span>  <span class="fl">0.1487237</span>  <span class="fl">0.5469076</span> <span class="fl">5.844422e-01</span></span>
-<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>Mediators   <span class="fl">0.07448551</span>  <span class="fl">0.1233981</span>  <span class="fl">0.6036197</span> <span class="fl">5.460965e-01</span></span>
-<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>Residual   <span class="sc">-</span><span class="fl">1.28793744</span>  <span class="fl">0.3984015</span> <span class="sc">-</span><span class="fl">3.2327622</span> <span class="fl">1.225996e-03</span></span></code></pre></div>
+<span><span class="op">)</span></span></code></pre></div>
+<p><strong>Display information.</strong> If <code>verbose=TRUE</code>, it will display the progress of jackknife for computing SEs, and print a message for how the selection adjustment is conducted. In this example, it displays:</p>
+<pre><code>Jackknifing [============================================================&gt;] 100%
+
+Message for selective inferece:
+NOTE: Running selective inference conditional on p &lt;= 0.05! </code></pre>
+<p><strong>Table and plot.</strong> The object <code>results</code> contain a summary table of decomposition and a decomposition plot as in our paper, and their counterparts after adjusting for publication bias. It also returns the message for how the selection adjustment is conducted.</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" tabindex="-1"></a><span class="sc">&gt;</span> results<span class="sc">$</span>table</span>
+<span id="cb7-2"><a href="#cb7-2" tabindex="-1"></a>                     Estimate Std. Error  t<span class="sc">-</span>stat <span class="fu">Pr</span>(<span class="sc">&gt;</span><span class="er">|</span>z<span class="sc">|</span>)</span>
+<span id="cb7-3"><a href="#cb7-3" tabindex="-1"></a>Observed discrepancy  <span class="sc">-</span><span class="fl">1.1321</span>     <span class="fl">0.3361</span> <span class="sc">-</span><span class="fl">3.3681</span>   <span class="fl">0.0008</span></span>
+<span id="cb7-4"><a href="#cb7-4" tabindex="-1"></a>Covariates             <span class="fl">0.1409</span>     <span class="fl">0.2315</span>  <span class="fl">0.6085</span>   <span class="fl">0.5428</span></span>
+<span id="cb7-5"><a href="#cb7-5" tabindex="-1"></a>Mediators              <span class="fl">0.0150</span>     <span class="fl">0.0998</span>  <span class="fl">0.1500</span>   <span class="fl">0.8808</span></span>
+<span id="cb7-6"><a href="#cb7-6" tabindex="-1"></a>Residual              <span class="sc">-</span><span class="fl">1.2879</span>     <span class="fl">0.3984</span> <span class="sc">-</span><span class="fl">3.2328</span>   <span class="fl">0.0012</span></span></code></pre></div>
 <p>and the following decomposition plot:</p>
-<p><img src="https://raw.githubusercontent.com/ying531/archiv/main/default_plot.png" width="600" height="300"></p>
-<p>If <code>if_selective=TRUE</code>, it runs selective inference procedures. It will additionally display the following summary table:</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>Summary of post<span class="sc">-</span>selective decomposition <span class="cf">for</span> replication diagnosis<span class="sc">:</span></span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>                  low       high    estimate</span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>Observed   <span class="sc">-</span><span class="fl">1.6846210</span> <span class="sc">-</span><span class="fl">0.5446210</span> <span class="sc">-</span><span class="fl">1.13462105</span></span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>Covariates <span class="sc">-</span><span class="fl">0.1631354</span>  <span class="fl">0.3268646</span>        <span class="sc">-</span><span class="cn">Inf</span></span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>Mediators  <span class="sc">-</span><span class="fl">0.1334761</span>  <span class="fl">0.2765239</span>  <span class="fl">0.07652393</span></span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>Residual   <span class="sc">-</span><span class="fl">1.9459682</span> <span class="sc">-</span><span class="fl">0.6159682</span> <span class="sc">-</span><span class="fl">1.28596819</span></span></code></pre></div>
+<p><img src="https://raw.githubusercontent.com/ying531/archiv/main/package_example.png" width="600" height="240"></p>
+<p><strong>Selection-adjusted table and plot.</strong> If <code>if_selective=TRUE</code>, it runs selective inference procedures. It will additionally display the following summary table:</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" tabindex="-1"></a><span class="sc">&gt;</span> results<span class="sc">$</span>sel.table</span>
+<span id="cb8-2"><a href="#cb8-2" tabindex="-1"></a>                      CI.Low CI.High Estimate</span>
+<span id="cb8-3"><a href="#cb8-3" tabindex="-1"></a>Observed discrepancy <span class="sc">-</span><span class="fl">1.6850</span> <span class="sc">-</span><span class="fl">0.5427</span>  <span class="sc">-</span><span class="fl">1.1321</span></span>
+<span id="cb8-4"><a href="#cb8-4" tabindex="-1"></a>Covariate shift      <span class="sc">-</span><span class="fl">0.2399</span>  <span class="fl">0.5216</span>   <span class="fl">0.1409</span></span>
+<span id="cb8-5"><a href="#cb8-5" tabindex="-1"></a>Mediation shift      <span class="sc">-</span><span class="fl">0.1492</span>  <span class="fl">0.1792</span>   <span class="fl">0.0150</span></span>
+<span id="cb8-6"><a href="#cb8-6" tabindex="-1"></a>Residual             <span class="sc">-</span><span class="fl">1.9433</span> <span class="sc">-</span><span class="fl">0.6188</span>  <span class="sc">-</span><span class="fl">1.2831</span></span></code></pre></div>
 <p>and the following decomposition plot that adjusts for publication bias:</p>
-<p><img src="https://raw.githubusercontent.com/ying531/archiv/main/default_plot_selective.png" width="600" height="300"></p>
+<p><img src="https://raw.githubusercontent.com/ying531/archiv/main/package_example_sel.png" width="600" height="240"></p>
 <p>This plot does not differ much from the first because the original p-value is tiny, hence adjusting for publication bias does not change things too much.</p>
+</div>
+<div class="section level2">
+<h2 id="documentation">Documentation<a class="anchor" aria-label="anchor" href="#documentation"></a>
+</h2>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" tabindex="-1"></a>run_diagnosis <span class="ot">&lt;-</span> <span class="cf">function</span>(</span>
+<span id="cb9-2"><a href="#cb9-2" tabindex="-1"></a>    org_df,</span>
+<span id="cb9-3"><a href="#cb9-3" tabindex="-1"></a>    rep_df,</span>
+<span id="cb9-4"><a href="#cb9-4" tabindex="-1"></a>    analysis_formula,</span>
+<span id="cb9-5"><a href="#cb9-5" tabindex="-1"></a>    treatment_variable, </span>
+<span id="cb9-6"><a href="#cb9-6" tabindex="-1"></a>    <span class="at">focal_variable =</span> <span class="cn">NULL</span>,  </span>
+<span id="cb9-7"><a href="#cb9-7" tabindex="-1"></a>    <span class="at">covariates =</span> <span class="cn">NULL</span>,</span>
+<span id="cb9-8"><a href="#cb9-8" tabindex="-1"></a>    <span class="at">covariate_formula =</span> <span class="cn">NULL</span>,</span>
+<span id="cb9-9"><a href="#cb9-9" tabindex="-1"></a>    <span class="at">mediators =</span> <span class="cn">NULL</span>,</span>
+<span id="cb9-10"><a href="#cb9-10" tabindex="-1"></a>    <span class="at">mediation_formula =</span> <span class="cn">NULL</span>,</span>
+<span id="cb9-11"><a href="#cb9-11" tabindex="-1"></a>    <span class="at">cluster_id =</span> <span class="cn">NULL</span>,</span>
+<span id="cb9-12"><a href="#cb9-12" tabindex="-1"></a>    <span class="at">selection_variable =</span> <span class="cn">NULL</span>,</span>
+<span id="cb9-13"><a href="#cb9-13" tabindex="-1"></a>    <span class="at">alpha =</span> <span class="fl">0.1</span>,</span>
+<span id="cb9-14"><a href="#cb9-14" tabindex="-1"></a>    <span class="at">verbose =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb9-15"><a href="#cb9-15" tabindex="-1"></a>    <span class="at">if_selective =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb9-16"><a href="#cb9-16" tabindex="-1"></a>    <span class="at">pub_pvalue_threshold =</span> <span class="fl">0.05</span></span>
+<span id="cb9-17"><a href="#cb9-17" tabindex="-1"></a>)</span></code></pre></div>
+<p>This function takes two data.frame’s for the original study and replication study as input, and conducts the replicability decomposition on the fitted coefficient for <code>focal_variable</code> in a linear regression with <code>analysis_formula</code>. If <code>if_selective == True</code>, then it conducts post-selection inference for the decomposition given that the p-value for <code>selection_variable</code> is smaller than <code>pub_pvalue_threshold</code>.</p>
+<p>Below we describe in details how the arguments should be specified.</p>
+<table class="table">
+<colgroup>
+<col width="18%">
+<col width="81%">
+</colgroup>
+<thead><tr class="header">
+<th>Arguments</th>
+<th>Description</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td><code>org_df</code></td>
+<td>Dataframe for individual-level data in the original study</td>
+</tr>
+<tr class="even">
+<td><code>rep_df</code></td>
+<td>Dataframe for individual-level data in the replication study; must match the format of <code>org_df</code> for features involved in the analysis</td>
+</tr>
+<tr class="odd">
+<td><code>analysis_formula</code></td>
+<td>The analysis formula for the regression, such as “outcome ~ treatment”</td>
+</tr>
+<tr class="even">
+<td><code>treatment_variable</code></td>
+<td>The column name for the treatment indicator (1=treatment)</td>
+</tr>
+<tr class="odd">
+<td><code>focal_variable</code></td>
+<td>Optional, Optional, string for the column name of the variable on which the decomposition is conducted; if not specified, it will be set as <code>treatment_variable</code>
+</td>
+</tr>
+<tr class="even">
+<td><code>covariates</code></td>
+<td>Optional, vector for column names or column number of covariates to balance</td>
+</tr>
+<tr class="odd">
+<td><code>covariate_formula</code></td>
+<td>Optional, formula for covariates to balance. <br> - For instance, to balance <code>age</code> and <code>gender</code>, you can take it as <code>"~ age + gender"</code>, or <code>"~(age+gender) * treatment"</code> meaning that they are balanced in each arm; the two choices should not differ significantly. <br> - If both <code>covariates</code> and <code>covariate_formula</code> are specified, covariate_formula will be taken. <br> - In our implementation, taking <code>covariates = c("age", "gender")</code> is equivalent to <code>covariate_formula = "~ (age+gender) * treatment"</code>.</td>
+</tr>
+<tr class="even">
+<td><code>mediators</code></td>
+<td>Optional, vector for column names or column number of mediators to balance</td>
+</tr>
+<tr class="odd">
+<td><code>mediation_formula</code></td>
+<td>Optional, formula for mediators to balance, which should also include covariates. <br> - For instance, if you want to balance <code>my_mediator</code> on top of <code>age</code> and <code>gender</code>, the mediation formula should be <code>"~ (age + gender + mymediator) * treatment"</code>, which means “mediator” is viewed as a mediator to balance. <br> - If both <code>mediators</code> and <code>mediation_formula</code> are specified, mediation_formula will be taken.</td>
+</tr>
+<tr class="even">
+<td><code>cluster_id</code></td>
+<td>Optional, string for the column name of the cluster id in the studies (specify if the study is clustered)</td>
+</tr>
+<tr class="odd">
+<td><code>selection_variable</code></td>
+<td>Optional, string for the column name on which the publication bias happens; if not specified, it will be set the same as <code>focal_variable</code>
+</td>
+</tr>
+<tr class="even">
+<td><code>alpha</code></td>
+<td>Optional, the confidence level for the confidence intervals, <code>= 0.1</code> by default</td>
+</tr>
+<tr class="odd">
+<td><code>verbse</code></td>
+<td>Optional, <code>= TRUE</code> by default; print the Jackknife progress and selective inference message if <code>verbose == TRUE</code>
+</td>
+</tr>
+<tr class="even">
+<td><code>if_selective</code></td>
+<td>Optional, <code>= TRUE</code> by default; conduct post-selective inference for publication bias if <code>if_selecitve == True | |</code>pub_pvalue_threshold<code>| Optional,</code>= 0.05<code>by default; the p-value threshold for publication bias adjustment. Selective inference will stop and return a message if the p-value in the original study for</code>focal_variable` is smaller than this value.</td>
+</tr>
+</tbody>
+</table>
+<p>Below are the outputs in the returned list by the function.</p>
+<table class="table">
+<colgroup>
+<col width="20%">
+<col width="80%">
+</colgroup>
+<thead><tr class="header">
+<th>Output</th>
+<th>Description</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td><code>plot</code></td>
+<td>Decomposition plot without publication bias adjustment</td>
+</tr>
+<tr class="even">
+<td><code>table</code></td>
+<td>Summary table without publication bias adjustment</td>
+</tr>
+<tr class="odd">
+<td><code>sel.plot</code></td>
+<td>Decomposition plot with publication bias adjustment; will be <code>NULL</code> if selective inference is not run or post-selection intervals are too wide (outside of estimate += 256 * SE)</td>
+</tr>
+<tr class="even">
+<td><code>sel.table</code></td>
+<td>Summary table with publication bias adjustment; shows <code>-Inf</code> and <code>Inf</code> for confidence intervals if no meaningful CIs are found within estimate += 256 * SE</td>
+</tr>
+<tr class="odd">
+<td><code>sel.message</code></td>
+<td>Messages for selective inference, including how it is conducted and whether any CI is too wide; will be displayed if <code>verbose==TRUE</code>
+</td>
+</tr>
+</tbody>
+</table>
 </div>
 </div>
   </div>

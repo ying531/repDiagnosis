@@ -1,27 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://ying531.github.io/repDiagnosis/404.html</loc>
+    <loc>/404.html</loc>
   </url>
   <url>
-    <loc>https://ying531.github.io/repDiagnosis/LICENSE-text.html</loc>
+    <loc>/LICENSE-text.html</loc>
   </url>
   <url>
-    <loc>https://ying531.github.io/repDiagnosis/articles/citation.html</loc>
+    <loc>/articles/citation.html</loc>
   </url>
   <url>
-    <loc>https://ying531.github.io/repDiagnosis/articles/index.html</loc>
+    <loc>/articles/index.html</loc>
   </url>
   <url>
-    <loc>https://ying531.github.io/repDiagnosis/authors.html</loc>
+    <loc>/authors.html</loc>
   </url>
   <url>
-    <loc>https://ying531.github.io/repDiagnosis/index.html</loc>
+    <loc>/index.html</loc>
   </url>
   <url>
-    <loc>https://ying531.github.io/repDiagnosis/reference/index.html</loc>
+    <loc>/reference/index.html</loc>
   </url>
   <url>
-    <loc>https://ying531.github.io/repDiagnosis/reference/run_diagnosis.html</loc>
+    <loc>/reference/run_diagnosis.html</loc>
   </url>
 </urlset>

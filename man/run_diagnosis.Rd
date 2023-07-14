@@ -8,13 +8,14 @@ run_diagnosis(
   org_df,
   rep_df,
   analysis_formula,
-  treatment_name,
-  id_name_1 = NULL,
-  id_name_2 = NULL,
-  covariate_formula = NULL,
+  treatment_variable,
+  focal_variable = NULL,
   covariates = NULL,
-  mediation_formula = NULL,
+  covariate_formula = NULL,
   mediators = NULL,
+  mediation_formula = NULL,
+  cluster_id = NULL,
+  selection_variable = NULL,
   alpha = 0.1,
   verbose = TRUE,
   if_selective = TRUE,
@@ -28,27 +29,29 @@ run_diagnosis(
 
 \item{analysis_formula}{The analysis formula for the regression, such as "outcome ~ treatment"}
 
-\item{treatment_name}{String for the column name of the treatment indicator (=1 means treatment)}
+\item{treatment_variable}{String for the column name of the treatment indicator (1=treatment)}
 
-\item{id_name_1}{Optional, string for the column name of the cluster id in the original study (specify if the study is clustered)}
+\item{focal_variable}{Optional, string for the column name of the variable on which the decomposition is conducted; if not specified, it will be set as the treatment variable}
 
-\item{id_name_2}{Optional, string for the column name of the cluster id in the original study (specify if the study is clustered)}
+\item{covariates}{Optional, vector for column names or column number of covariates to balance}
 
-\item{covariate_formula}{Optional, formula for covariates to balance, such as "~ age + gender" which means the covariates to balance are "age" and "gender"}
+\item{covariate_formula}{Optional, formula for covariates to balance, such as "~ age + gender" which means the covariates to balance are "age" and "gender", or "~(age+gender) * treatment" means they are balanced in each arm; the two choices should not differ significantly. If both covariates and covariate_formula are specified, covariate_formula will be taken.}
 
-\item{covariates}{Optional, vector for column names or column number of covariates to balance. At least one of covariates and covariate_formula must be specified. If both are specified, covariate_formula will be taken}
+\item{mediators}{Optional, vector for column names or column number of mediators to balance}
 
-\item{mediation_formula}{Optional, formula for mediators to balance, which should also include covariates, such as "~ (age + gender + mediator) * treatment", which means "mediator" is viewed as a mediator to balance}
+\item{mediation_formula}{Optional, formula for mediators to balance, which should also include covariates, such as "~ (age + gender + mediator) * treatment", which means "mediator" is viewed as a mediator to balance. If both are specified, mediation_formula is taken}
 
-\item{mediators}{Optional, vector for column names or column number of mediators to balance. At least one of mediation_formula and mediators must be specified. If both are specified, mediation_formula is taken}
+\item{cluster_id}{Optional, string for the column name of the cluster id in the studies (specify if the study is clustered)}
+
+\item{selection_variable}{Optional, string for the column name on which the publication bias happens; if not specified, it will be set as the focal variable}
 
 \item{alpha}{Optional, default at 0.1, coverage level for the confidence intervals is 1-alpha}
 
-\item{verbose}{Optional, default at TRUE, whether to display summary tables and decomposition plots}
+\item{verbose}{Optional, default at TRUE, whether to show progress bars in analysis}
 
 \item{if_selective}{Optional, default at TRUE, whether or not to run selective inference that adjusts for publication bias}
 
-\item{pub_pvalue_threshold}{Optional, default at 0.05, the threshold for publication bias, i.e., the selective inference CIs are valid conditonal on that the original study p-value is smaller than pub_pvalue_threshold}
+\item{pub_pvalue_threshold}{Optional, default at 0.05, the threshold for publication bias, i.e., the selective inference CIs are valid conditional on that the original study p-value is smaller than pub_pvalue_threshold}
 }
 \value{
 A list containing the summary table, decomposition plot, summary table for selective inference, decomposition plot for selective inference, and error message for selective inference in the case of infinite confidence intervals

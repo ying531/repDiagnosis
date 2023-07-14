@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">repDiagnosis</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.1.0</span>
       </span>
     </div>
 
@@ -32,7 +32,7 @@
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu"><li>
-      <a href="../articles/citation.html">Cite repDiagnosis</a>
+      <a href="../articles/citation.html">Citation</a>
     </li>
   </ul></li>
       </ul><ul class="nav navbar-nav navbar-right"></ul></div><!--/.nav-collapse -->
@@ -58,13 +58,14 @@
 <span>  <span class="va">org_df</span>,</span>
 <span>  <span class="va">rep_df</span>,</span>
 <span>  <span class="va">analysis_formula</span>,</span>
-<span>  <span class="va">treatment_name</span>,</span>
-<span>  id_name_1 <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  id_name_2 <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  covariate_formula <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  <span class="va">treatment_variable</span>,</span>
+<span>  focal_variable <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  covariates <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  mediation_formula <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  covariate_formula <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  mediators <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  mediation_formula <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  cluster_id <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  selection_variable <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  alpha <span class="op">=</span> <span class="fl">0.1</span>,</span>
 <span>  verbose <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  if_selective <span class="op">=</span> <span class="cn">TRUE</span>,</span>
@@ -86,32 +87,36 @@
 <dd><p>The analysis formula for the regression, such as "outcome ~ treatment"</p></dd>
 
 
-<dt>treatment_name</dt>
-<dd><p>String for the column name of the treatment indicator (=1 means treatment)</p></dd>
+<dt>treatment_variable</dt>
+<dd><p>String for the column name of the treatment indicator (1=treatment)</p></dd>
 
 
-<dt>id_name_1</dt>
-<dd><p>Optional, string for the column name of the cluster id in the original study (specify if the study is clustered)</p></dd>
-
-
-<dt>id_name_2</dt>
-<dd><p>Optional, string for the column name of the cluster id in the original study (specify if the study is clustered)</p></dd>
-
-
-<dt>covariate_formula</dt>
-<dd><p>Optional, formula for covariates to balance, such as "~ age + gender" which means the covariates to balance are "age" and "gender"</p></dd>
+<dt>focal_variable</dt>
+<dd><p>Optional, string for the column name of the variable on which the decomposition is conducted; if not specified, it will be set as the treatment variable</p></dd>
 
 
 <dt>covariates</dt>
-<dd><p>Optional, vector for column names or column number of covariates to balance. At least one of covariates and covariate_formula must be specified. If both are specified, covariate_formula will be taken</p></dd>
+<dd><p>Optional, vector for column names or column number of covariates to balance</p></dd>
 
 
-<dt>mediation_formula</dt>
-<dd><p>Optional, formula for mediators to balance, which should also include covariates, such as "~ (age + gender + mediator) * treatment", which means "mediator" is viewed as a mediator to balance</p></dd>
+<dt>covariate_formula</dt>
+<dd><p>Optional, formula for covariates to balance, such as "~ age + gender" which means the covariates to balance are "age" and "gender", or "~(age+gender) * treatment" means they are balanced in each arm; the two choices should not differ significantly. If both covariates and covariate_formula are specified, covariate_formula will be taken.</p></dd>
 
 
 <dt>mediators</dt>
-<dd><p>Optional, vector for column names or column number of mediators to balance. At least one of mediation_formula and mediators must be specified. If both are specified, mediation_formula is taken</p></dd>
+<dd><p>Optional, vector for column names or column number of mediators to balance</p></dd>
+
+
+<dt>mediation_formula</dt>
+<dd><p>Optional, formula for mediators to balance, which should also include covariates, such as "~ (age + gender + mediator) * treatment", which means "mediator" is viewed as a mediator to balance. If both are specified, mediation_formula is taken</p></dd>
+
+
+<dt>cluster_id</dt>
+<dd><p>Optional, string for the column name of the cluster id in the studies (specify if the study is clustered)</p></dd>
+
+
+<dt>selection_variable</dt>
+<dd><p>Optional, string for the column name on which the publication bias happens; if not specified, it will be set as the focal variable</p></dd>
 
 
 <dt>alpha</dt>
@@ -119,7 +124,7 @@
 
 
 <dt>verbose</dt>
-<dd><p>Optional, default at TRUE, whether to display summary tables and decomposition plots</p></dd>
+<dd><p>Optional, default at TRUE, whether to show progress bars in analysis</p></dd>
 
 
 <dt>if_selective</dt>
@@ -127,7 +132,7 @@
 
 
 <dt>pub_pvalue_threshold</dt>
-<dd><p>Optional, default at 0.05, the threshold for publication bias, i.e., the selective inference CIs are valid conditonal on that the original study p-value is smaller than pub_pvalue_threshold</p></dd>
+<dd><p>Optional, default at 0.05, the threshold for publication bias, i.e., the selective inference CIs are valid conditional on that the original study p-value is smaller than pub_pvalue_threshold</p></dd>
 
 </dl></div>
     <div id="value">

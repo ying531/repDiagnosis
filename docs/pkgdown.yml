@@ -1,10 +1,7 @@
-pandoc: 2.19.2
+pandoc: 3.1.1
 pkgdown: 2.0.7
 pkgdown_sha: ~
 articles:
   citation: citation.html
-last_built: 2023-04-03T18:03Z
-urls:
-  reference: https://ying531.github.io/repDiagnosis/reference
-  article: https://ying531.github.io/repDiagnosis/articles
+last_built: 2023-07-12T07:50Z
 

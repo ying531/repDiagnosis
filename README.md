@@ -5,10 +5,12 @@ Repository for R package `repDiagnosis` and R shiny app for live replication dia
 **Reference.** Please use the following citation if you use our methods, datasets, or softwares for analyzing replication studies.
 
 ```
-
+Jin, Y.*, Guo, K.*, Rothenhäusler, D. (2023). 
+Diagnosing the role of observed distribution shift in scientific replications. 
+Arxiv preprint.
 ```
 
-**Rshiny app.** To quickly get started with our method, we recommend you visit our Rshiny app and play with our preloaded  clean datasets. Our Rshiny app is also helpful if you want to quickly diagnose your replication study pairs with easy-to-use features, such as live displaying and visualizing data, specifying your study, automatically checking regression in two studies, etc., or if you want to probe the generalizability of your single study (this function is not in our package and paper).
+**Rshiny app.** To quickly get started with our method, we recommend you visit our interactive [Rshiny app](https://mbzlnj-ying-jin.shinyapps.io/shiny/) and play with our preloaded  clean datasets. Our Rshiny app is useful if you want to quickly diagnose your replication study pairs with easy-to-use features, such as live displaying and visualizing data, specifying your study, automatically checking regression in two studies, etc., or if you want to probe the generalizability of your single study (this function is not in our package and paper). [[Link to Rshiny app](https://mbzlnj-ying-jin.shinyapps.io/shiny/)]
 
 **Dataset collection.** In a sibling Github repository [awesome-replicability-data](https://github.com/ying531/awesome-replicability-data), we collect individual-level data for 11 original-replication study pairs from publicly available sources, and 5 one-sided replication studies. Visit our data collection to explore these datasets and our pre-processed clean versions.
 

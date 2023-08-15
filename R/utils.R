@@ -18,16 +18,42 @@
 
 
   # Create design matrices.  Care to drop unused factor levels, for the jackknife
+  # if (!no_covariate_formula) {
+  #   X1 = model.matrix(formula(covariate_formula), data=group1)[,-1]
+  #   X1 = X1[,apply(X1, 2, function(x) { !all(x==0) })]
+  #   X2 = model.matrix(formula(covariate_formula), data=group2)[,colnames(X1)]
+  #   X = rbind(X1, X2)
+  # }
+  # if (!no_mediation_formula) {
+  #   M1 = model.matrix(formula(mediation_formula), data=group1)[,-1]
+  #   M1 = M1[,apply(M1, 2, function(m) { !all(m==0) })]
+  #   M2 = model.matrix(formula(mediation_formula), data=group2)[,colnames(M1)]
+  #   M = rbind(M1, M2)
+  # }
   if (!no_covariate_formula) {
     X1 = model.matrix(formula(covariate_formula), data=group1)[,-1]
-    X1 = X1[,apply(X1, 2, function(x) { !all(x==0) })]
-    X2 = model.matrix(formula(covariate_formula), data=group2)[,colnames(X1)]
+    if (is.null(dim(X1))){
+      X1 = data.frame("X" = X1)
+      X2 = model.matrix(formula(covariate_formula), data=group2)[,-1]
+      X2 = data.frame("X" = X2)
+    }else{
+      X1 = X1[,apply(X1, 2, function(x) { !all(x==0) })]
+      X2 = model.matrix(formula(covariate_formula), data=group2)[,colnames(X1)]
+    }
+
     X = rbind(X1, X2)
   }
   if (!no_mediation_formula) {
     M1 = model.matrix(formula(mediation_formula), data=group1)[,-1]
-    M1 = M1[,apply(M1, 2, function(m) { !all(m==0) })]
-    M2 = model.matrix(formula(mediation_formula), data=group2)[,colnames(M1)]
+    if (is.null(dim(M1))){
+      M1 = data.frame("M" = M1)
+      M2 = model.matrix(formula(mediation_formula), data=group2)
+      M2 = data.frame("M" = M2)
+    }else{
+      M1 = M1[,apply(M1, 2, function(m) { !all(m==0) })]
+      M2 = model.matrix(formula(mediation_formula), data=group2)[,colnames(M1)]
+    }
+
     M = rbind(M1, M2)
   }
 

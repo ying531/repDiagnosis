@@ -8,7 +8,7 @@ Repository for R package `repDiagnosis` and R shiny app for live replication dia
 
 **Dataset collection.** In a sibling Github repository [awesome-replicability-data](https://github.com/ying531/awesome-replicability-data), we collect individual-level data for 11 original-replication study pairs from publicly available sources, and 5 one-sided replication studies. Visit our data collection to explore these datasets and our pre-processed clean versions.
 
-**Documentation website.** For more on the package and the Rshiny app, see the associated [documentation]() website.
+<!-- **Documentation website.** For more on the package and the Rshiny app, see the associated [documentation]() website. -->
 
 ## Install R Package `repDiagnosis`
   

@@ -1,17 +1,8 @@
 # repDiagnosis
-Repository for R package `repDiagnosis` and R shiny app for live replication diagnosis tools.
+Repository for R package `repDiagnosis` and R shiny app for live replication diagnosis tools. This package accompanies the paper "[Diagnosing the role of observable distribution shift in scientific replications](https://arxiv.org/abs/2309.01056)" by Ying Jin, Kevin Guo and Dominik Rothenhäusler. [[Reference](#reference)]
  
 
-**Reference.** Please use the following citation if you use our methods, datasets, or softwares for analyzing replication studies.
-
-```
-@article{jin2023diagnosing,
-  title={Diagnosing the role of observable distribution shift in scientific replications},
-  author={Jin, Ying and Guo, Kevin and Rothenh{\"a}usler, Dominik},
-  journal={arXiv preprint},
-  year={2023}
-}
-```
+ 
 
 **Rshiny app.** To quickly get started with our method, we recommend you visit our interactive [Rshiny app](https://mbzlnj-ying-jin.shinyapps.io/shiny/) and play with our preloaded  clean datasets. Our Rshiny app is useful if you want to quickly diagnose your replication study pairs with easy-to-use features, such as live displaying and visualizing data, specifying your study, automatically checking regression in two studies, etc., or if you want to probe the generalizability of your single study (this function is not in our package and paper). [[Link to Rshiny app](https://mbzlnj-ying-jin.shinyapps.io/shiny/)]
 
@@ -177,3 +168,16 @@ Below are the outputs in the returned list by the function.
 | `sel.table`  | Summary table with publication bias adjustment; shows `-Inf` and `Inf` for confidence intervals if no meaningful CIs are found within estimate += 256 * SE |
 | `sel.message`  | Messages for selective inference, including how it is conducted and whether any CI is too wide; will be displayed if `verbose==TRUE` | 
 
+
+### Reference  <a name="reference"></a>
+
+Please use the following citation if you use this collection in your study, or you use our softwares for analyzing replication studies.
+
+```
+@article{jin2023diagnosing,
+  title={Diagnosing the role of observable distribution shift in scientific replications},
+  author={Jin, Ying and Guo, Kevin and Rothenh{\"a}usler, Dominik},
+  journal={arXiv preprint},
+  year={2023}
+}
+```

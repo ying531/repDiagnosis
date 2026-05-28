@@ -76,7 +76,7 @@ run_diagnosis <- function(
                   error = function(e) { return(NA) })
     X2 = tryCatch({model.matrix(formula(covariate_formula), data=rep_df)},
                   error = function(e) { return(NA) })
-    if (is.na(X1) || is.na(X2)){ # any of the data fails to be extracted
+    if (identical(X1, NA) || identical(X2, NA)){ # any of the data fails to be extracted
       stop("Covariate input does not work! \n")
     }else{# extract covariate names into a vector
       covariates = setdiff(intersect(colnames(org_df), colnames(X1)[2:ncol(X1)]), c(treatment_variable))
